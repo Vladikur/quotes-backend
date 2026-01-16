@@ -1,29 +1,63 @@
 Abraham Lincoln / Авраам Линкольн
+Abu Said / Абу Саид
+Al-Farid / Аль-Фарид
+Al-Ghazali / Аль-Газали
+Al-Tirmidhi / Аль-Тирмидхи
+Alex Horn / Алекс Хорн
+Arabian Nights / Тысяча и одна ночь
 Aristocles (Plato) / Аристокл (Платон)
 Aristotle / Аристотель
+Bahauddin / Бахауддин
+Benjamin Franklin / Бенджамин Франклин
+Bernard of Clairvaux / Бернар Клервоский
 Bible / Библия
+Buddha / Будда
+Carlo Collodi / Карло Коллоди
 Charles Lamb / Чарльз Лэмб
+Dante Alighieri / Данте Алигьери
 Dogen / Догэн
 Egyptian Texts / Египетские тексты
 Epictetus / Эпиктет
+Evagrios the Solitary / Евагрий Отшельник
 Goethe / Гёте
+Gregory Palamas / Григорий Палама
+Hafiz / Хафиз
+Hans Christian Andersen / Ганс Кристиан Андерсен
 Helen Keller / Хелен Келлер
 Heraclitus / Гераклит
 Hildegard of Bingen / Хильдегарда Бингенская
 Huineng / Хуэйненг
+Ibn Arabi / Ибн Араби
+Inca Belief / Поверье Инков
+Isaiah the Solitary / Исаия Отшельник
 Jalal ad-Din Rumi / Джалал ад-Дин Руми
 John Milton / Джон Милтон
+John of the Ladder / Иоанн Лествичник
 Katha Upanishad / Катха-упанишада
+Koran / Коран
 Korinna / Коринна
+Lalla / Лалла
+Lao Tzu / Лао Цзы
 Leonardo da Vinci / Леонардо да Винчи
 Linji / Линьцзи
+Madani / Мадани
 Marcus Aurelius / Марк Аврелий
+Mark the Ascetic / Марк Подвижник
+Maximos the Confessor / Максим Исповедник
+Mayan Text / Тексты Майя
 Meister Eckhart / Майстер Экхарт
 Milarepa / Миларепа
+Muhammad / Мохаммед
+Nag Hammadi Library / Библиотека Наг-Хаммади
+Omar Khayyam / Омар Хайям
 Oscar Wilde / Оскар Уайлд
 Parmenides / Парменид
+Peter Ouspensky / Пётр Успенский
 Petrarch / Петрарка
+Philokalia / Добротолюбие
 Plotinus / Плотин
+Popol Vuh / Пополь Вух
+Qushayri / Кушайри
 Rabbi Chaim Vital / Рабби Хаим Виталь
 Rabia / Рабия
 Rainer Maria Rilke / Райнер Мария Рильке
@@ -35,6 +69,8 @@ Seneca / Сенека
 Silouan the Athonite / Силуан Афонский
 Socrates / Сократ
 Stanislavsky / Станиславский
+Sufi saying / Суфийское изречение
+Sultan Bahu / Султан Баху
 Thomas Traherne / Томас Трэхерн
 Vedanta Wisdom / Мудрость Упанишады
 Walt Whitman / Уолт Уитмен

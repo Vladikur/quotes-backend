@@ -2,20 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const db = require('../scripts/db');
 
-const quotesNew = [
-    {
-        author_en: 'Jalal ad-Din Rumi',
-        author_ru: 'Джалал ад-Дин Руми',
-        text_en: 'The lovers of God have no religion but God.',
-        text_ru: 'У Любящих Бога нет религии, кроме Бога.',
-        source_en: null,
-        source_ru: null,
-        dates_of_life_en: '1207 — 1273',
-        dates_of_life_ru: '1207 — 1273',
-        robert_comment_en: null,
-        robert_comment_ru: null,
-        embedding_en: null,
-    },
+const quotes = [
 ]
 
 // --------------------
@@ -142,7 +129,7 @@ function generateAuthorsFile(fileName = 'authors.txt') {
 // --------------------
 
 const existingQuotes = getExistingQuotes();
-const quotesToInsert = filterNewQuotes(existingQuotes, quotesNew);
+const quotesToInsert = filterNewQuotes(existingQuotes, quotes);
 
 importQuotes(quotesToInsert);
 generateAuthorsFile();
