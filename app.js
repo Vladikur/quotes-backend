@@ -1,5 +1,4 @@
 const cors = require('cors');
-const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config();
@@ -24,17 +23,6 @@ app.use(requestLogger);
 app.use(apiLimiter);
 
 app.use('/quotes', quotesRoutes);
-
-// ⬇⬇⬇ ВАЖНО: раздача Vue
-app.use(express.static(
-    path.join(__dirname, '../client/dist')
-))
-
-app.get(/^(?!\/quotes).*/, (req, res) => {
-    res.sendFile(
-        path.join(__dirname, '../client/dist/index.html')
-    )
-})
 
 app.use(errorLogger);
 
