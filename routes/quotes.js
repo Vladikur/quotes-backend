@@ -64,8 +64,6 @@ router.get('/', async (req, res, next) => {
                        text_ru,
                        source_en,
                        source_ru,
-                       dates_of_life_en,
-                       dates_of_life_ru,
                        robert_comment_en,
                        robert_comment_ru,
                        created_at
@@ -105,8 +103,6 @@ router.get('/', async (req, res, next) => {
                     text_ru: q.text_ru,
                     source_en: q.source_en,
                     source_ru: q.source_ru,
-                    dates_of_life_en: q.dates_of_life_en,
-                    dates_of_life_ru: q.dates_of_life_ru,
                     robert_comment_en: q.robert_comment_en,
                     robert_comment_ru: q.robert_comment_ru,
                     created_at: q.created_at,

@@ -3,6 +3,7 @@ const path = require('path');
 const db = require('../scripts/db');
 
 const quotes = [
+
 ]
 
 // --------------------

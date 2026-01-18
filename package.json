@@ -6,6 +6,7 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "quote": "node addNewQuotesScripts/addNewQuotes.js",
+    "structure": "node addNewQuotesScripts/structuringQuotes.js",
     "embed": "node addNewQuotesScripts/buildEmbeddings.js"
   },
   "keywords": [],
