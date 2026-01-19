@@ -9,14 +9,14 @@ const {createSearch, getSearch} = require('../scripts/searchStore');
 
 const MIN_SCORE = 0.25;
 
-router.get('/', async (req, res, next) => {
+router.post('/', async (req, res, next) => {
     try {
         const {
             search,
             searchId,
             page = 1,
             limit = 10
-        } = req.query;
+        } = req.body;
 
         const pageNum = Math.max(Number(page), 1);
         const limitNum = Math.max(Number(limit), 1);
