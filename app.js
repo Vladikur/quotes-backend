@@ -20,7 +20,7 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(requestLogger);
+// app.use(requestLogger);
 
 app.use('/api', apiLimiter);
 
