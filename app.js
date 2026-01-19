@@ -11,6 +11,8 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
+app.set('trust proxy', true);
+
 app.use(cors());
 
 app.use(helmet());
@@ -22,7 +24,7 @@ app.use(requestLogger);
 
 app.use(apiLimiter);
 
-app.use('/quotes', quotesRoutes);
+app.use('/api/quotes', quotesRoutes);
 
 app.use(errorLogger);
 
