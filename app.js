@@ -15,12 +15,12 @@ app.set('trust proxy', true);
 
 app.use(cors());
 
-// app.use(helmet());
+app.use(helmet());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// app.use(requestLogger);
+app.use(requestLogger);
 
 app.use('/api', apiLimiter);
 
