@@ -107,23 +107,23 @@ function importQuotes(quotes) {
 // Генерация authors.txt из БД
 // --------------------
 
-function generateAuthorsFile(fileName = 'authors.txt') {
-    const authors = db.prepare(`
-        SELECT DISTINCT author_en, author_ru
-        FROM quotes
-        ORDER BY author_en ASC
-    `).all();
-
-    const content = authors
-        .map(a => `${a.author_en} / ${a.author_ru}`)
-        .join('\n');
-
-    fs.writeFileSync(
-        path.join(__dirname, fileName),
-        content,
-        'utf8'
-    );
-}
+// function generateAuthorsFile(fileName = 'authors.txt') {
+//     const authors = db.prepare(`
+//         SELECT DISTINCT author_en, author_ru
+//         FROM quotes
+//         ORDER BY author_en ASC
+//     `).all();
+//
+//     const content = authors
+//         .map(a => `${a.author_en} / ${a.author_ru}`)
+//         .join('\n');
+//
+//     fs.writeFileSync(
+//         path.join(__dirname, fileName),
+//         content,
+//         'utf8'
+//     );
+// }
 
 // --------------------
 // Запуск
@@ -133,4 +133,4 @@ const existingQuotes = getExistingQuotes();
 const quotesToInsert = filterNewQuotes(existingQuotes, quotes);
 
 importQuotes(quotesToInsert);
-generateAuthorsFile();
+// generateAuthorsFile();

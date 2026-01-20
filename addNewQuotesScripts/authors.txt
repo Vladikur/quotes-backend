@@ -1,70 +1,123 @@
+Abd al-Ghafur / Абд аль-Гафур
 Abraham Lincoln / Авраам Линкольн
 Abu Said / Абу Саид
 Abu al-Makki / Абу аль-Макки
 Aeschylus / Эсхил
+Aesop / Эзоп
+Agnes Kuchuk / Агнес Кучук
 Al-Farid / Аль-Фарид
 Al-Ghazali / Аль-Газали
 Al-Jilani / Аль-Джилани
 Al-Tirmidhi / Аль-Тирмидхи
+Albrecht Dürer / Альбрехт Дюрер
 Alex Horn / Алекс Хорн
+Alexander von Humboldt / Александр фон Гумбольдт
+Alfred de Vigny / Альфред де Виньи
+Alfred, Lord Tennyson / Альфред, Лорд Теннисон
+Anaxagoras / Анаксагор
 Angelus Silesius / Ангелус Силезиус
+Anna Pavlova / Анна Павлова
+Anonymous / Неизвестный
+Antoine de Saint-Exupéry / Антуан де Сент-Экзюпери
 Arabian Nights / Тысяча и одна ночь
+Archimedes of Syracuse / Архимед Сиракузский
 Aristocles (Plato) / Аристокл (Платон)
 Aristotle / Аристотель
+Arthur Conan Doyle / Артур Конан Дойль
 Attar / Аттар
 Augustine / Августин
+Bacchylides / Вакхилид
 Bahauddin / Бахауддин
 Bayazid / Баязид
+Ben Johnson / Бен Джонсон
 Benjamin Franklin / Бенджамин Франклин
 Bernard Berenson / Бернард Беренсон
 Bernard of Clairvaux / Бернар Клервоский
 Bhagavad Gita / Бхагавад Гита
 Bible / Библия
 Buddha / Будда
+Bulwer-Lytton / Булвер-Липтон
+Carl Sagan / Карл Саган
 Carlo Collodi / Карло Коллоди
+Cesare Borgia / Чезаре Борджиа
+Charles IX of France / Карл IX Французский
 Charles Lamb / Чарльз Лэмб
+Charlotte Bronte / Шарлотта Бронте
 Chinese Texts / Китайские Тексты
+Christina Rossetti / Кристина Россетти
+Confucius / Конфуций
 Dante Alighieri / Данте Алигьери
 Darqawi / Даргави
 Dogen / Догэн
+Edgar Cayce / Эдгар Кейси
+Edward Gibbon / Эдуард Гиббон
 Egyptian Texts / Египетские тексты
+Elizabeth I / Елизавета I
+Emerson / Эмерсон
+Emily Dickinson / Эмили Дикинсон
+English Proverb / Английская пословица
 Epictetus / Эпиктет
+Epicurus / Эпикур
 Euripides / Еврипид
 Evagrios the Solitary / Евагрий Отшельник
+Evariste Galois / Эварист Галуа
+Ezekiel / Иезекииль
 Fra Angelico / Фра Анджелико
+Francesco Melzi / Франческо Мельци
 Francisco de Goya / Франсиско де Гойя
+Friedrich Schiller / Фридрих Шиллер
+G.I. Gurdjieff / Г.И. Гурджиев
+Galileo Galilei / Галилео Галилей
 Gampopa / Гампопа
 George Bernard Shaw / Джордж Бернард Шоу
 George Sand / Жорж Санд
+Gertrude Stein / Гертруда Штайн
 Giordano Bruno / Джордано Бруно
 Giotto di Bondone / Джотто ди Бондоне
 Goethe / Гёте
+Greek saying / Греческая пословица
 Gregory Palamas / Григорий Палама
+Guerric of Igny / Геррик из Иньи
 Gujduvani / Гуждувани
 Guru Nanak / Гуру Нанак
 Hafiz / Хафиз
 Hans Christian Andersen / Ганс Кристиан Андерсен
+Hecaton of Rhodes / Гекатон Родосский
 Helen Keller / Хелен Келлер
+Heraclites / Гераклит
 Heraclitus / Гераклит
+Herman Hesse / Герман Гессе
+Hermes Trismegistus / Гермес Трисмегист
 Hesiod / Гесиод
 Hildegard of Bingen / Хильдегарда Бингенская
 Homer / Гомер
 Horace / Гораций
+Hsu Yun / Хсу Юнь
 Huang-Po / Хуан-По
 Huineng / Хуэйненг
+Ibn Abbad of Ronda / Ибн Аббад Ронда
 Ibn Arabi / Ибн Араби
 Ibn Sina / Ибн Сина
 Igor Stravinsky / Игорь Стравинский
 Inca Belief / Поверье Инков
+Isaac Newton / Исаак Ньютон
+Isadora Duncan / Айседора Дункан
+Isaiah / Исайя
 Isaiah the Solitary / Исаия Отшельник
 Jalal ad-Din Rumi / Джалал ад-Дин Руми
+James Joyce / Джеймс Джойс
+Jami / Джами
 Johann Joachim Winckelmann / Иоганн Иоахим Винкельман
 Johann Sebastian Bach / Иоганн Себастьян Бах
+Johann Wolfgang von Goethe / Иоганн Вольфганг фон Гёте
 John Cowper Powys / Джон Купер Повис
 John Keats / Джон Китс
 John Milton / Джон Милтон
+John Palmer / Джон Палмер
+John Ruskin / Джон Раскин
 John of Damascus / Иоанн Дамаскин
 John of the Ladder / Иоанн Лествичник
+Joseph de Maistre / Жозеф де Местр
 Kabbalah / Каббала
 Kabir / Кабир
 Kashini / Кашини
@@ -78,77 +131,128 @@ Leonardo da Vinci / Леонардо да Винчи
 Lewis Carroll / Льюис Кэрролл
 Linji / Линьцзи
 Madani / Мадани
+Mahabharata / Махабхарата
 Marcel Proust / Марсель Пруст
 Marcus Aurelius / Марк Аврелий
 Margot Fonteyn / Марго Фонтейн
 Marguerite Porete / Маргарита Поретанская
 Mark the Ascetic / Марк Подвижник
 Marsilio Ficino / Марсилио Фичино
+Matthew 6:13 / От Матфея 6:13
+Maurice de Saxe / Морис де Сакс
 Mawlana Qasim / Мауляна Касим
 Maximos the Confessor / Максим Исповедник
 Mayan Text / Тексты Майя
 Meher Baba / Мехер Баба
 Meister Eckhart / Майстер Экхарт
+Meister Eckhart / Мейстер Экхарт
 Mencius / Мэн-цзы
+Michel de Montaigne / Мишель де Монтень
 Michelangelo / Микеланджело
+Miguel de Cervantes / Мигель де Сервантес
 Milarepa / Миларепа
+Molière / Мольер
+Montaigne / Мишель де Монтень
 Muhammad / Мохаммед
 Nag Hammadi Library / Библиотека Наг-Хаммади
+Nagarjuna / Нагарджуна
 Nahuatl Poetry / Поэзия Науатля
 Natalia Makarova / Наталья Макарова
+Neilos the Ascetic / Нил Подвижник
+Nilus Scholasticus / Нил Схоластик
 Norman Maclean / Норман Маклин
+O. H. Browning / О. Х. Браунинг
+Octavio Paz / Октавио Паз
 Omar Khayyam / Омар Хайям
 Oscar Wilde / Оскар Уайлд
+Ovid / Овидий
+P.D. Ouspensky / П.Д. Успенский
+Padmasambhava / Падмасамбхава
 Parmenides / Парменид
+Paul the Apostle / Апостол Павел
 Percy Bysshe Shelley / Перси Биши Шелли
+Pericles / Перикл
+Persian Book of Kings / Персидская книга царей
 Peter Ouspensky / Пётр Успенский
 Petrarch / Петрарка
 Philo of Alexandria / Филон Александрийский
 Philokalia / Добротолюбие
 Pico della Mirandola / Пико делла Мирандола
+Pierre-Simon de Laplace / Пьер-Симон де Лаплас
+Pindar / Пиндар
+Plato / Платон
 Plotinus / Плотин
 Plutarch / Плутарх
 Popol Vuh / Пополь Вух
+Proclus / Прокл
 Pythagoras / Пифагор
+Quintilian / Квинтилиан
 Qushayri / Кушайри
+Qushayri / Куйшари
 Rabbi Chaim Vital / Рабби Хаим Виталь
 Rabbinical wisdom / Мудрость раввинов
 Rabia / Рабия
 Rabindranath Tagore / Рабиндранат Тагор
 Rainer Maria Rilke / Райнер Мария Рильке
 Ralph Waldo Emerson / Ральф Уолдо Эмерсон
+Rashadiya / Рашадия
 Rig Veda / Ригведа
 Robert Bridges / Роберт Бридж
 Robert Burton / Роберт Бертон
+Robert Burton / Роберт Бёртон
 Robert Burton (English author) / Роберт Бертон (Английский автор)
+Robert Chambers / Роберт Чемберс
+Rodney Collin / Родни Коллин
 Ruzbihan Baqli / Рузбихан Бакли
+Samuel Butler / Сэмюэл Батлер
+Samuel Johnson / Сэмюэл Джонсон
 Sappho / Сафо
 Seneca / Сенека
 Shah Waliullah of Delhi / Шах Валиуллах Делийский
 Silouan the Athonite / Силуан Афонский
 Simonides of Ceos / Симонид Кеосский
+Sir Walter Raleigh / Сэр Уолтер Рэли
 So Sahn / Со Сан
 Socrates / Сократ
+Solon / Солон
 Sophocles / Софокл
+St. Augustine / Св. Августин
 St. Jerome / Святой Иероним
 Stanislavsky / Станиславский
+Stephen Hawking / Стивен Хокинг
 Sufi saying / Суфийское изречение
 Sultan Bahu / Султан Баху
+Symeon Metaphrastis / Симеон Метафраст
 T.S. Eliot / Т.С. Элиот
 Tashkandi / Ташканди
 Teresa of Avila / Тереза Авильская
+Thales of Miletus / Фалес из Милета
+The Last Oracle at Delphi / Последний оракул в Дельфах
 The Riddle of the Sphinx / Загадка Сфинкса
+The Taoist Alchemical Texts / Даосские алхимические тексты
+Thomas Edison / Томас Эдисон
+Thomas Hobbes / Томас Хоббс
+Thomas Scott / Томас Скотт
 Thomas Traherne / Томас Трэхерн
 Tibetan Texts / Тибетские тексты
+Titian / Тициан
 Toltec Wisdom / Мудрость толтеков
+Tycho Brahe / Тихо Браге
+Umar Bin Abdul Aziz / Умар Бин Абдель Азиз
 Vedanta Wisdom / Мудрость Упанишады
+Victor Hugo / Виктор Гюго
 Virgil / Вергилий
 Walt Whitman / Уолт Уитмен
 Walter Savage Landor / Уолтер Сэвидж Лэндор
 William Blake / Уильям Блейк
+William Butler Yeats / Уильям Батлер Йейтс
+William Cowper / Уильям Каупер
 William James / Уильям Джеймс
 William Shakespeare / Уильям Шекспир
 William Wordsworth / Уильям Вордсворт
+Woodrow Wilson / Вудро Вильсон
+Yunus Emre / Юнус Эмре
 Zen Master / Дзен мастер
 Zhuangzi / Чуан-цзы
+Zhuangzi / Чжуан-цзы
 Zoroaster / Зороастр

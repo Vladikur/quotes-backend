@@ -7,7 +7,7 @@ const translateStringToEnglish = require('../ai/translateToEnglish');
 const embedString = require('../ai/embedString');
 const {createSearch, getSearch} = require('../scripts/searchStore');
 
-const MIN_SCORE = 0.25;
+const MIN_SCORE = 0.27;
 
 router.post('/', async (req, res, next) => {
     try {

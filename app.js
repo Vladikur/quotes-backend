@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(requestLogger);
 
-app.use('/api', apiLimiter);
+app.use(apiLimiter);
 
 app.use('/api/quotes', quotesRoutes);
 
