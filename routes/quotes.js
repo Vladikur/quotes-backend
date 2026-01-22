@@ -7,7 +7,7 @@ const translateStringToEnglish = require('../ai/translateToEnglish');
 const embedString = require('../ai/embedString');
 const {createSearch, getSearch} = require('../scripts/searchStore');
 
-const MIN_SCORE = 0.27;
+const MIN_SCORE = 0.3;
 
 router.post('/', async (req, res, next) => {
     try {
@@ -120,6 +120,7 @@ router.post('/', async (req, res, next) => {
             count: scored.length,
             page: pageNum,
             limit: limitNum,
+            queryEn,
             data: scored.slice(offset, offset + limitNum)
         });
 
