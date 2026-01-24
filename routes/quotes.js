@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../scripts/db');
-const {getQuotesWithEmbeddings} = require('../scripts/quotesWithEmbeddingsCache');
+const {getQuotesWithEmbeddings, resetQuotesEmbeddingsCache} = require('../scripts/quotesWithEmbeddingsCache');
 const cosineSimilarity = require('../scripts/cosineSimilarity');
 const translateStringToEnglish = require('../ai/translateToEnglish');
 const embedString = require('../ai/embedString');
@@ -9,6 +9,12 @@ const {createSearch, getSearch} = require('../scripts/searchStore');
 
 const MIN_SCORE = 0.3;
 
+/**
+ * =========================
+ * ПОИСК ЦИТАТ
+ * =========================
+ * DELETE /api/quotes/
+ */
 router.post('/', async (req, res, next) => {
     try {
         const {
@@ -127,6 +133,44 @@ router.post('/', async (req, res, next) => {
     } catch (err) {
         next(err);
     }
+});
+
+/**
+ * =========================
+ * УДАЛЕНИЕ ЦИТАТЫ
+ * =========================
+ * DELETE /api/quotes/:id
+ */
+router.delete('/:id', (req, res) => {
+    const { id } = req.params;
+    const quoteId = Number(id);
+
+    if (!Number.isInteger(quoteId)) {
+        return res.status(400).json({
+            success: false,
+            message: 'Некорректный id цитаты'
+        });
+    }
+
+    const exists = db
+        .prepare('SELECT id FROM quotes WHERE id = ?')
+        .get(quoteId);
+
+    if (!exists) {
+        return res.status(404).json({
+            success: false,
+            message: 'Цитата не найдена'
+        });
+    }
+
+    db.prepare('DELETE FROM quotes WHERE id = ?').run(quoteId);
+
+    resetQuotesEmbeddingsCache();
+
+    return res.json({
+        success: true,
+        message: 'Цитата удалена'
+    });
 });
 
 module.exports = router;

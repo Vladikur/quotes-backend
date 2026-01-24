@@ -8,6 +8,14 @@ let cache = {
     loading: null,
 };
 
+function resetQuotesEmbeddingsCache() {
+    cache = {
+        quotes: [],
+        expiresAt: 0,
+        loading: null,
+    };
+}
+
 function loadQuotesWithEmbeddings() {
     return db.prepare(`
         SELECT *
@@ -44,4 +52,5 @@ async function getQuotesWithEmbeddings() {
 
 module.exports = {
     getQuotesWithEmbeddings,
+    resetQuotesEmbeddingsCache,
 };

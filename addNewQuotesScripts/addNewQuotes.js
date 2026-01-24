@@ -4,7 +4,7 @@ const db = require('../scripts/db');
 
 const quotes = [
 
-];
+]
 
 // --------------------
 // Utils
