@@ -189,7 +189,7 @@ router.post('/bulk', async (req, res, next) => {
         const { quotes } = req.body;
 
         if (!Array.isArray(quotes)) {
-            return res.status(400).json({
+            return res.json({
                 success: false,
                 message: 'Ожидается массив цитат'
             });
@@ -197,7 +197,6 @@ router.post('/bulk', async (req, res, next) => {
 
         const insertCandidates = [];
         let addedCount = 0;
-        let updatedCount = 0;
         let skippedCount = 0;
 
         const findByTextPrefixStmt = db.prepare(`
@@ -205,19 +204,6 @@ router.post('/bulk', async (req, res, next) => {
             FROM quotes
             WHERE text_en LIKE ?
             LIMIT 1
-        `);
-
-        const updateStmt = db.prepare(`
-            UPDATE quotes
-            SET author_en = @author_en,
-                author_ru = @author_ru,
-                text_en = @text_en,
-                text_ru = @text_ru,
-                source_en = @source_en,
-                source_ru = @source_ru,
-                robert_comment_en = @robert_comment_en,
-                robert_comment_ru = @robert_comment_ru
-            WHERE id = @id
         `);
 
         for (const quote of quotes) {
@@ -234,28 +220,10 @@ router.post('/bulk', async (req, res, next) => {
             } = quote;
 
             if (!author_en || !author_ru || !text_en || !text_ru) {
-                return res.status(400).json({
+                return res.json({
                     success: false,
                     message: 'author_en, author_ru, text_en, text_ru обязательны'
                 });
-            }
-
-            // Обновление по id
-            if (id) {
-                updateStmt.run({
-                    id,
-                    author_en,
-                    author_ru,
-                    text_en,
-                    text_ru,
-                    source_en,
-                    source_ru,
-                    robert_comment_en,
-                    robert_comment_ru
-                });
-
-                updatedCount++;
-                continue;
             }
 
             // Проверка дубликата по первым 5 словам
@@ -285,10 +253,7 @@ router.post('/bulk', async (req, res, next) => {
         if (!insertCandidates.length) {
             return res.json({
                 success: true,
-                message:
-                    `Добавлено: ${addedCount}, ` +
-                    `обновлено: ${updatedCount}, ` +
-                    `пропущено: ${skippedCount}`
+                message: 'Новых цитат нет',
             });
         }
 
@@ -355,7 +320,6 @@ router.post('/bulk', async (req, res, next) => {
             success: true,
             message:
                 `Добавлено: ${addedCount}, ` +
-                `обновлено: ${updatedCount}, ` +
                 `пропущено: ${skippedCount}`
         });
 
@@ -365,5 +329,141 @@ router.post('/bulk', async (req, res, next) => {
 
 });
 
+/**
+ * =========================
+ * МАССОВОЕ ОБНОВЛЕНИЕ ЦИТАТ
+ * =========================
+ * POST /api/quotes/bulk/update
+ */
+router.post('/bulk/update', async (req, res, next) => {
+    try {
+        const { quotes } = req.body;
+
+        if (!Array.isArray(quotes) || !quotes.length) {
+            return res.json({
+                success: false,
+                message: 'Ожидается непустой массив цитат'
+            });
+        }
+
+        /**
+         * =========================
+         * ВАЛИДАЦИЯ
+         * =========================
+         */
+        const ids = [];
+        for (const quote of quotes) {
+            const {
+                id,
+                author_en,
+                author_ru,
+                text_en,
+                text_ru
+            } = quote;
+
+            if (!Number.isInteger(id)) {
+                return res.json({
+                    success: false,
+                    message: 'У каждой цитаты должен быть корректный id'
+                });
+            }
+
+            if (!author_en || !author_ru || !text_en || !text_ru) {
+                return res.json({
+                    success: false,
+                    message: 'author_en, author_ru, text_en, text_ru обязательны'
+                });
+            }
+
+            ids.push(id);
+        }
+
+        /**
+         * =========================
+         * ПРОВЕРКА СУЩЕСТВОВАНИЯ ID
+         * =========================
+         */
+        const placeholders = ids.map(() => '?').join(',');
+        const existingIds = db.prepare(`
+            SELECT id
+            FROM quotes
+            WHERE id IN (${placeholders})
+        `).all(...ids).map(r => r.id);
+
+        if (existingIds.length !== ids.length) {
+            const missing = ids.filter(id => !existingIds.includes(id));
+            return res.json({
+                success: false,
+                message: `Цитаты не найдены: ${missing.join(', ')}`
+            });
+        }
+
+        /**
+         * =========================
+         * BATCH EMBEDDINGS
+         * =========================
+         */
+        const [embeddingsRu, embeddingsEn] = await Promise.all([
+            buildEmbeddingsBatchRu(quotes),
+            buildEmbeddingsBatchEn(quotes)
+        ]);
+
+        /**
+         * =========================
+         * ОБНОВЛЕНИЕ В БД
+         * =========================
+         */
+        const updateStmt = db.prepare(`
+            UPDATE quotes
+            SET
+                author_en = @author_en,
+                author_ru = @author_ru,
+                text_en = @text_en,
+                text_ru = @text_ru,
+                source_en = @source_en,
+                source_ru = @source_ru,
+                robert_comment_en = @robert_comment_en,
+                robert_comment_ru = @robert_comment_ru,
+                embedding_en_blob = @embedding_en_blob,
+                embedding_ru_blob = @embedding_ru_blob
+            WHERE id = @id
+        `);
+
+        const updateMany = db.transaction((rows) => {
+            rows.forEach((row, index) => {
+                updateStmt.run({
+                    id: row.id,
+                    author_en: row.author_en,
+                    author_ru: row.author_ru,
+                    text_en: row.text_en,
+                    text_ru: row.text_ru,
+                    source_en: row.source_en ?? null,
+                    source_ru: row.source_ru ?? null,
+                    robert_comment_en: row.robert_comment_en ?? null,
+                    robert_comment_ru: row.robert_comment_ru ?? null,
+                    embedding_en_blob: floatArrayToBuffer(embeddingsEn[index]),
+                    embedding_ru_blob: floatArrayToBuffer(embeddingsRu[index])
+                });
+            });
+        });
+
+        updateMany(quotes);
+
+        /**
+         * =========================
+         * СБРОС КЭША
+         * =========================
+         */
+        resetQuotesEmbeddingsCache();
+
+        return res.json({
+            success: true,
+            message: `Обновлено цитат: ${quotes.length}`
+        });
+
+    } catch (err) {
+        next(err);
+    }
+});
 
 module.exports = router;
