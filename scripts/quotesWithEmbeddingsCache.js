@@ -1,50 +1,63 @@
 const db = require('./db');
-
-const CACHE_TTL_MS = 60 * 60 * 1000; // 1 час
+const bufferToFloatArray = require('./bufferToFloatArray');
 
 let cache = {
-    quotes: [],
-    expiresAt: 0,
+    quotes: null,     // null = ещё не загружено
     loading: null,
 };
 
 function resetQuotesEmbeddingsCache() {
-    cache = {
-        quotes: [],
-        expiresAt: 0,
-        loading: null,
-    };
+    cache.quotes = null;
+    cache.loading = null;
 }
 
 function loadQuotesWithEmbeddings() {
     return db.prepare(`
-        SELECT *
+        SELECT
+            id,
+            author_en,
+            author_ru,
+            text_en,
+            text_ru,
+            source_en,
+            source_ru,
+            robert_comment_en,
+            robert_comment_ru,
+            created_at,
+            embedding_en_blob,
+            embedding_ru_blob
         FROM quotes
-        WHERE embedding_en IS NOT NULL
+        WHERE embedding_en_blob IS NOT NULL
+           OR embedding_ru_blob IS NOT NULL
     `).all();
 }
 
 async function getQuotesWithEmbeddings() {
-    const now = Date.now();
-
-    // cache ещё валиден
-    if (cache.quotes.length && now < cache.expiresAt) {
+    // Уже загружено
+    if (cache.quotes) {
         return cache.quotes;
     }
 
-    // защита от одновременной перезагрузки
+    // Уже идёт загрузка
     if (cache.loading) {
         return cache.loading;
     }
 
     cache.loading = Promise.resolve().then(() => {
-        const quotes = loadQuotesWithEmbeddings();
+        const rows = loadQuotesWithEmbeddings();
 
-        cache.quotes = quotes;
-        cache.expiresAt = Date.now() + CACHE_TTL_MS;
+        cache.quotes = rows.map(q => ({
+            ...q,
+            embedding_en: q.embedding_en_blob
+                ? bufferToFloatArray(q.embedding_en_blob)
+                : null,
+            embedding_ru: q.embedding_ru_blob
+                ? bufferToFloatArray(q.embedding_ru_blob)
+                : null,
+        }));
+
         cache.loading = null;
-
-        return quotes;
+        return cache.quotes;
     });
 
     return cache.loading;

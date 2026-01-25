@@ -1,11 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const embedString = require('../ai/embedString');
+
 const db = require('../scripts/db');
 const {getQuotesWithEmbeddings, resetQuotesEmbeddingsCache} = require('../scripts/quotesWithEmbeddingsCache');
 const cosineSimilarity = require('../scripts/cosineSimilarity');
-const translateStringToEnglish = require('../ai/translateToEnglish');
-const embedString = require('../ai/embedString');
+const detectLanguage = require('../scripts/detectLanguage');
+const formatSqliteDate = require('../scripts/formatSqliteDate');
+const floatArrayToBuffer = require('../scripts/floatArrayToBuffer');
 const {createSearch, getSearch} = require('../scripts/searchStore');
+const {buildEmbeddingsBatchRu, buildEmbeddingsBatchEn} = require('../ai/buildEmbeddingsBatch');
 
 const MIN_SCORE = 0.3;
 
@@ -92,13 +96,14 @@ router.post('/', async (req, res, next) => {
          * ПЕРВЫЙ AI-ПОИСК
          * =========================
          */
-        const queryEn = await translateStringToEnglish(search);
-        const queryEmbedding = await embedString(queryEn);
+        const lang = detectLanguage(search); // 'ru' | 'en'
+        const queryEmbedding = await embedString(search);
         const quotes = await getQuotesWithEmbeddings();
 
         const scored = quotes
             .map(q => {
-                const embedding = JSON.parse(q.embedding_en);
+                const embedding =
+                    lang === 'ru' ? q.embedding_ru : q.embedding_en;
                 const score = cosineSimilarity(queryEmbedding, embedding);
 
                 return {
@@ -126,7 +131,7 @@ router.post('/', async (req, res, next) => {
             count: scored.length,
             page: pageNum,
             limit: limitNum,
-            queryEn,
+            lang: lang,
             data: scored.slice(offset, offset + limitNum)
         });
 
@@ -172,5 +177,193 @@ router.delete('/:id', (req, res) => {
         message: 'Цитата удалена'
     });
 });
+
+/**
+ * =========================
+ * МАССОВАЯ ЗАГРУЗКА ЦИТАТ
+ * =========================
+ * POST /api/quotes/bulk
+ */
+router.post('/bulk', async (req, res, next) => {
+    try {
+        const { quotes } = req.body;
+
+        if (!Array.isArray(quotes)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Ожидается массив цитат'
+            });
+        }
+
+        const insertCandidates = [];
+        let addedCount = 0;
+        let updatedCount = 0;
+        let skippedCount = 0;
+
+        const findByTextPrefixStmt = db.prepare(`
+            SELECT id
+            FROM quotes
+            WHERE text_en LIKE ?
+            LIMIT 1
+        `);
+
+        const updateStmt = db.prepare(`
+            UPDATE quotes
+            SET author_en = @author_en,
+                author_ru = @author_ru,
+                text_en = @text_en,
+                text_ru = @text_ru,
+                source_en = @source_en,
+                source_ru = @source_ru,
+                robert_comment_en = @robert_comment_en,
+                robert_comment_ru = @robert_comment_ru
+            WHERE id = @id
+        `);
+
+        for (const quote of quotes) {
+            const {
+                id,
+                author_en,
+                author_ru,
+                text_en,
+                text_ru,
+                source_en = null,
+                source_ru = null,
+                robert_comment_en = null,
+                robert_comment_ru = null,
+            } = quote;
+
+            if (!author_en || !author_ru || !text_en || !text_ru) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'author_en, author_ru, text_en, text_ru обязательны'
+                });
+            }
+
+            // Обновление по id
+            if (id) {
+                updateStmt.run({
+                    id,
+                    author_en,
+                    author_ru,
+                    text_en,
+                    text_ru,
+                    source_en,
+                    source_ru,
+                    robert_comment_en,
+                    robert_comment_ru
+                });
+
+                updatedCount++;
+                continue;
+            }
+
+            // Проверка дубликата по первым 5 словам
+            const firstFiveWords = text_en
+                .split(/\s+/)
+                .slice(0, 5)
+                .join(' ');
+
+            const exists = findByTextPrefixStmt.get(`${firstFiveWords}%`);
+            if (exists) {
+                skippedCount++;
+                continue;
+            }
+
+            insertCandidates.push({
+                author_en,
+                author_ru,
+                text_en,
+                text_ru,
+                source_en,
+                source_ru,
+                robert_comment_en,
+                robert_comment_ru
+            });
+        }
+
+        if (!insertCandidates.length) {
+            return res.json({
+                success: true,
+                message:
+                    `Добавлено: ${addedCount}, ` +
+                    `обновлено: ${updatedCount}, ` +
+                    `пропущено: ${skippedCount}`
+            });
+        }
+
+        /**
+         * =========================
+         * BATCH EMBEDDINGS
+         * =========================
+         */
+        const [embeddingsRu, embeddingsEn] = await Promise.all([
+            buildEmbeddingsBatchRu(insertCandidates),
+            buildEmbeddingsBatchEn(insertCandidates)
+        ]);
+
+        /**
+         * =========================
+         * ВСТАВКА В БД
+         * =========================
+         */
+        const insertStmt = db.prepare(`
+            INSERT INTO quotes (
+                author_en,
+                author_ru,
+                text_en,
+                text_ru,
+                source_en,
+                source_ru,
+                robert_comment_en,
+                robert_comment_ru,
+                embedding_en_blob,
+                embedding_ru_blob,
+                created_at
+            ) VALUES (
+                @author_en,
+                @author_ru,
+                @text_en,
+                @text_ru,
+                @source_en,
+                @source_ru,
+                @robert_comment_en,
+                @robert_comment_ru,
+                @embedding_en_blob,
+                @embedding_ru_blob,
+                @created_at
+            )
+        `);
+
+        const insertMany = db.transaction((rows) => {
+            rows.forEach((row, index) => {
+                insertStmt.run({
+                    ...row,
+                    embedding_en_blob: floatArrayToBuffer(embeddingsEn[index]),
+                    embedding_ru_blob: floatArrayToBuffer(embeddingsRu[index]),
+                    created_at: formatSqliteDate()
+                });
+                addedCount++;
+            });
+        });
+
+        insertMany(insertCandidates);
+
+        resetQuotesEmbeddingsCache();
+
+        return res.json({
+            success: true,
+            message:
+                `Добавлено: ${addedCount}, ` +
+                `обновлено: ${updatedCount}, ` +
+                `пропущено: ${skippedCount}`
+        });
+
+    } catch (err) {
+        next(err);
+    }
+
+});
+
 
 module.exports = router;
