@@ -40,21 +40,16 @@ router.post('/', async (req, res, next) => {
         if (searchId) {
             const data = getSearch(searchId);
 
-            if (!data) {
-                return res.status(410).json({
-                    success: false,
-                    message: 'Срок поиска истек, повторите запрос'
+            if (data) {
+                return res.json({
+                    success: true,
+                    searchId,
+                    count: data.length,
+                    page: pageNum,
+                    limit: limitNum,
+                    data: data.slice(offset, offset + limitNum)
                 });
             }
-
-            return res.json({
-                success: true,
-                searchId,
-                count: data.length,
-                page: pageNum,
-                limit: limitNum,
-                data: data.slice(offset, offset + limitNum)
-            });
         }
 
         /**
