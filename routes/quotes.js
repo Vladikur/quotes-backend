@@ -163,9 +163,9 @@ router.get('/:id', (req, res) => {
     `).get(quoteId);
 
     if (!quote) {
-        return res.status(404).json({
+        return res.json({
             success: false,
-            message: 'Цитата не найдена'
+            message: 'Quote not found'
         });
     }
 
@@ -205,7 +205,7 @@ router.put('/:id', async (req, res, next) => {
         if (!author_en || !author_ru || !text_en || !text_ru) {
             return res.json({
                 success: false,
-                message: 'author_en, author_ru, text_en, text_ru обязательны'
+                message: 'author_en, author_ru, text_en, text_ru are required'
             });
         }
 
@@ -221,7 +221,7 @@ router.put('/:id', async (req, res, next) => {
         if (!exists) {
             return res.json({
                 success: false,
-                message: 'Цитата не найдена'
+                message: 'Quote not found'
             });
         }
 
@@ -272,7 +272,7 @@ router.put('/:id', async (req, res, next) => {
 
         return res.json({
             success: true,
-            message: 'Цитата обновлена'
+            message: 'Quote updated'
         });
 
     } catch (err) {
@@ -294,21 +294,13 @@ router.delete('/:id', (req, res) => {
         .prepare('SELECT id FROM quotes WHERE id = ?')
         .get(quoteId);
 
-    if (!exists) {
-        return res.json({
-            success: false,
-            message: 'Цитата не найдена'
-        });
-    }
+    if (!exists) return res.json({success: false});
 
     db.prepare('DELETE FROM quotes WHERE id = ?').run(quoteId);
 
     resetQuotesEmbeddingsCache();
 
-    return res.json({
-        success: true,
-        message: 'Цитата удалена'
-    });
+    return res.json({success: true});
 });
 
 /**
@@ -324,7 +316,7 @@ router.post('/bulk', async (req, res, next) => {
         if (!Array.isArray(quotes)) {
             return res.json({
                 success: false,
-                message: 'Ожидается массив цитат'
+                message: 'Array of quotes expected'
             });
         }
 
@@ -355,7 +347,7 @@ router.post('/bulk', async (req, res, next) => {
             if (!author_en || !author_ru || !text_en || !text_ru) {
                 return res.json({
                     success: false,
-                    message: 'author_en, author_ru, text_en, text_ru обязательны'
+                    message: 'author_en, author_ru, text_en, text_ru are required'
                 });
             }
 
@@ -386,7 +378,7 @@ router.post('/bulk', async (req, res, next) => {
         if (!insertCandidates.length) {
             return res.json({
                 success: true,
-                message: 'Новых цитат нет',
+                message: 'No new quotes',
             });
         }
 
@@ -451,9 +443,7 @@ router.post('/bulk', async (req, res, next) => {
 
         return res.json({
             success: true,
-            message:
-                `Добавлено: ${addedCount}, ` +
-                `пропущено: ${skippedCount}`
+            message: `Added: ${addedCount}, skipped: ${skippedCount}`
         });
 
     } catch (err) {
