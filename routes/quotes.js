@@ -10,6 +10,7 @@ const formatSqliteDate = require('../scripts/formatSqliteDate');
 const floatArrayToBuffer = require('../scripts/floatArrayToBuffer');
 const {createSearch, getSearch} = require('../scripts/searchStore');
 const {buildEmbeddingsBatchRu, buildEmbeddingsBatchEn} = require('../ai/buildEmbeddingsBatch');
+const { auth, requireRole } = require('../middlewares/auth');
 
 const MIN_SCORE = 0.3;
 
@@ -141,7 +142,7 @@ router.post('/', async (req, res, next) => {
  * =========================
  * GET /api/quotes/:id
  */
-router.get('/:id', (req, res) => {
+router.get('/:id', auth, requireRole('editor'), (req, res) => {
     const { id } = req.params;
     const quoteId = Number(id);
 
@@ -181,7 +182,7 @@ router.get('/:id', (req, res) => {
  * =========================
  * PUT /api/quotes/:id
  */
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', auth, requireRole('editor'), async (req, res, next) => {
     try {
         const quoteId = Number(req.params.id);
         const quote = req.body;
@@ -286,7 +287,7 @@ router.put('/:id', async (req, res, next) => {
  * =========================
  * DELETE /api/quotes/:id
  */
-router.delete('/:id', (req, res) => {
+router.delete('/:id', auth, requireRole('editor'), (req, res) => {
     const { id } = req.params;
     const quoteId = Number(id);
 
@@ -309,7 +310,7 @@ router.delete('/:id', (req, res) => {
  * =========================
  * POST /api/quotes/bulk
  */
-router.post('/bulk', async (req, res, next) => {
+router.post('/bulk', auth, requireRole('editor'), async (req, res, next) => {
     try {
         const { quotes } = req.body;
 

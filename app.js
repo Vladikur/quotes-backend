@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const { apiLimiter } = require('./middlewares/rateLimit');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const quotesRoutes = require('./routes/quotes');
+const loginRoutes = require('./routes/login');
 
 const { PORT = 3000 } = process.env;
 
@@ -22,6 +23,7 @@ app.use(requestLogger);
 
 app.use(apiLimiter);
 
+app.use('/api/auth', loginRoutes);
 app.use('/api/quotes', quotesRoutes);
 
 app.use(errorLogger);
