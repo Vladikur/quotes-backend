@@ -1,5 +1,6 @@
 const db = require('./db');
 const bufferToFloatArray = require('./bufferToFloatArray');
+const normalizeSearchString = require('./normalizeSearchString');
 
 let cache = {
     quotes: null,     // null = ещё не загружено
@@ -46,15 +47,32 @@ async function getQuotesWithEmbeddings() {
     cache.loading = Promise.resolve().then(() => {
         const rows = loadQuotesWithEmbeddings();
 
-        cache.quotes = rows.map(q => ({
-            ...q,
-            embedding_en: q.embedding_en_blob
-                ? bufferToFloatArray(q.embedding_en_blob)
-                : null,
-            embedding_ru: q.embedding_ru_blob
-                ? bufferToFloatArray(q.embedding_ru_blob)
-                : null,
-        }));
+        cache.quotes = rows.map(q => {
+            const searchBlobRaw = [
+                q.author_en,
+                q.author_ru,
+                q.text_en,
+                q.text_ru,
+                q.source_en,
+                q.source_ru,
+                q.robert_comment_en,
+                q.robert_comment_ru,
+            ].filter(Boolean).join(' ');
+
+            return {
+                ...q,
+
+                // embeddings
+                embedding_en: q.embedding_en_blob
+                    ? bufferToFloatArray(q.embedding_en_blob)
+                    : null,
+                embedding_ru: q.embedding_ru_blob
+                    ? bufferToFloatArray(q.embedding_ru_blob)
+                    : null,
+
+                search_blob: normalizeSearchString(searchBlobRaw),
+            };
+        });
 
         cache.loading = null;
         return cache.quotes;

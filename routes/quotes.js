@@ -7,6 +7,7 @@ const {getQuotesWithEmbeddings, resetQuotesEmbeddingsCache} = require('../script
 const cosineSimilarity = require('../scripts/cosineSimilarity');
 const detectLanguage = require('../scripts/detectLanguage');
 const formatSqliteDate = require('../scripts/formatSqliteDate');
+const normalizeSearchString = require('../scripts/normalizeSearchString');
 const floatArrayToBuffer = require('../scripts/floatArrayToBuffer');
 const {createSearch, getSearch} = require('../scripts/searchStore');
 const {buildEmbeddingsBatchRu, buildEmbeddingsBatchEn} = require('../ai/buildEmbeddingsBatch');
@@ -25,6 +26,7 @@ router.post('/', async (req, res, next) => {
         const {
             search,
             searchId,
+            strict = false,
             page = 1,
             limit = 10
         } = req.body;
@@ -38,7 +40,7 @@ router.post('/', async (req, res, next) => {
          * ПАГИНАЦИЯ ПО searchId
          * =========================
          */
-        if (searchId) {
+        if (searchId && !strict) {
             const data = getSearch(searchId);
 
             if (data) {
@@ -84,6 +86,28 @@ router.post('/', async (req, res, next) => {
                 page: pageNum,
                 limit: limitNum,
                 data: quotes
+            });
+        }
+
+        /**
+         * =========================
+         * СТРОГИЙ ПОСИМВОЛЬНЫЙ ПОИСК
+         * =========================
+         */
+        if (search && strict) {
+            const normalizedQuery = normalizeSearchString(search);
+            const quotes = await getQuotesWithEmbeddings();
+
+            const matched = quotes.filter(q =>
+                q.search_blob.includes(normalizedQuery)
+            );
+
+            return res.json({
+                success: true,
+                count: matched.length,
+                page: pageNum,
+                limit: limitNum,
+                data: matched.slice(offset, offset + limitNum),
             });
         }
 
