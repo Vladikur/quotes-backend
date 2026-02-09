@@ -507,6 +507,8 @@ router.post(
 
                     if (visited.has(b.id)) continue;
 
+                    if (Math.abs(a.text_en.length - b.text_en.length) > 30) continue;
+
                     const score = cosineSimilarity(
                         a.embedding_en,
                         b.embedding_en
