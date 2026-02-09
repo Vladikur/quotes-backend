@@ -477,4 +477,77 @@ router.post('/bulk', auth, requireRole('editor'), async (req, res, next) => {
 
 });
 
+/**
+ * =========================
+ * ПОИСК ДУБЛИКАТОВ ЦИТАТ
+ * =========================
+ * POST /api/quotes/duplicates
+ */
+router.post(
+    '/duplicates',
+    auth,
+    requireRole('editor'),
+    async (req, res, next) => {
+        try {
+            const items = await getQuotesWithEmbeddings();
+
+            const visited = new Set();
+            const groups = [];
+
+            for (let i = 0; i < items.length; i++) {
+                const a = items[i];
+                if (visited.has(a.id)) continue;
+
+                visited.add(a.id);
+
+                const group = [a];
+
+                for (let j = i + 1; j < items.length; j++) {
+                    const b = items[j];
+
+                    if (visited.has(b.id)) continue;
+
+                    const score = cosineSimilarity(
+                        a.embedding_en,
+                        b.embedding_en
+                    );
+
+                    if (score >= 0.9) {
+                        group.push(b);
+                        visited.add(b.id);
+                    }
+                }
+
+                if (group.length > 1) {
+                    visited.add(a.id);
+
+                    group.forEach((q) => {
+                        groups.push({
+                            id: q.id,
+                            author_en: q.author_en,
+                            author_ru: q.author_ru,
+                            text_en: q.text_en,
+                            text_ru: q.text_ru,
+                            source_en: q.source_en,
+                            source_ru: q.source_ru,
+                            robert_comment_en: q.robert_comment_en,
+                            robert_comment_ru: q.robert_comment_ru,
+                            created_at: formatSqliteDate()
+                        })
+                    })
+                }
+            }
+
+            return res.json({
+                success: true,
+                count: groups.length,
+                data: groups,
+            });
+
+        } catch (err) {
+            next(err);
+        }
+    }
+);
+
 module.exports = router;
